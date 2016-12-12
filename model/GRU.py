@@ -67,7 +67,7 @@ class LargeConfig(object):
   keep_prob = 0.35
   lr_decay = 1 / 1.15
   batch_size = 20
-  vocab_size = 15000
+  vocab_size = 10000
 
 class TestConfig(object):
   """Tiny config, for testing."""
@@ -213,11 +213,14 @@ class Model(object):
 	[tf.reshape(targets, [-1])],
 	[tf.ones([batch_size * num_steps], dtype=tf.float32)])
     self._cost = cost = tf.reduce_sum(loss) / batch_size
+    
     ############################## self._cost ######################################
 
     if not is_training:
     	return
 
+#    tf.scalar_summary('cost', cost)
+#    self._merged = tf.merge_all_summaries()
     self._lr = tf.Variable(0.0, trainable=False)
     ############################# self._lr #########################################
     tvars = tf.trainable_variables()
@@ -236,6 +239,10 @@ class Model(object):
 
   def assign_lr(self, session, lr_value):
     session.run(self._lr_update, feed_dict={self._new_lr: lr_value})
+
+#  @property
+#  def merged(self):
+#    return self._merged
 
   @property
   def input_data(self):

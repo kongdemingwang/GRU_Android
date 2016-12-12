@@ -55,7 +55,7 @@ public class PredictorActivity extends Activity {
     private String main_str = new String(); // for predict
 
     private TensorFlowWordPredictor predictor = new TensorFlowWordPredictor();
-    private static final int NUM_CLASSES = 15000;
+    private static final int NUM_CLASSES = 10000;
     private static final int INPUT_MAX_SIZE = 20; // at most 19 words
     //TODO not sure about the name
     private static final String INPUT_NAME = "Test/input:0";

@@ -137,7 +137,7 @@ public class TensorFlowWordPredictor implements Predictor {
       for (int i = 0; i < input_words.length; ++i) {
         Log.e(TAG, "input_word: " + input_words[i]);
         if (word_to_id.containsKey(input_words[i])) intValues[i] = word_to_id.get(input_words[i]);
-        else intValues[i] = 12; //rare words, <unk> in the vocab
+        else intValues[i] = 6; //rare words, <unk> in the vocab
         Log.e(TAG, "input_id: " + intValues[i]);
       }
       for (int i = input_words.length; i < input_max_Size; ++i) {
