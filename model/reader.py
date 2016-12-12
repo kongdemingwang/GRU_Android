@@ -72,9 +72,9 @@ def ptb_raw_data(data_path=None):
     where each of the data objects can be passed to PTBIterator.
   """
 
-  train_path = os.path.join(data_path, "tanaka_15000.txt")
-  valid_path = os.path.join(data_path, "tanaka_15000.txt")
-  test_path = os.path.join(data_path, "tanaka_15000.txt")
+  train_path = os.path.join(data_path, "tanaka_10000.txt")
+  valid_path = os.path.join(data_path, "tanaka_10000.txt")
+  test_path = os.path.join(data_path, "tanaka_10000.txt")
 
   word_to_id, id_to_word = _build_vocab(train_path)
   train_data = _file_to_word_ids(train_path, word_to_id)

@@ -68,24 +68,29 @@ def run_training(session, model):
   start_time = time.time()
   costs = 0.0
   iters = 0
-
+#  train_writer = tf.train.SummaryWriter(FLAGS.save_path + '/train', session.graph) 
+ 
+#  print("start time: %s" % (start_time))
   fetches = {
       "cost": model.cost,
-      "train_op": model.train_op
+      "train_op": model.train_op,
   }
-
+  
   for step in range(model.input.epoch_size):
     vals = session.run(fetches)
     cost = vals["cost"]
-
     costs += cost
     iters += model.input.num_steps
 
-  #  if step % (model.input.epoch_size // 10) == 0:
-  #    print("%.2f perplexity: %.3f speed: %.0f wps" % 
-  #          (step * 1.0 /model.input.epoch_size, np.exp(costs / iters),
-  #	    iters * model.input.batch_size / (time.time() - start_time)))
+#    if step % (model.input.epoch_size // 10) == 0:
+#      print("%.2f perplexity: %.3f speed: %.0f wps" % 
+#        (step * 1.0 /model.input.epoch_size, np.exp(costs / iters),
+#          iters * model.input.batch_size / (time.time() - start_time)))
 
+#      summary = session.run(model.merged)
+#      train_writer.add_summary(summary, step * 1.0/model.input.epoch_size)
+   
+#  print("End time: %s" % time.time())
   return np.exp(costs / iters)
 
 def run_validation(session, model):
@@ -167,7 +172,7 @@ def main(_):
     raise ValueError("Must set --data_path to data directory")
 
   raw_data = reader.ptb_raw_data(FLAGS.data_path)
-  train_data, valid_data, test_data, _, id_to_word = raw_data
+  train_data, valid_data, test_data, _, id_to_word = raw_data 
  
   config = get_config()
   eval_config = get_config()
@@ -202,6 +207,7 @@ def main(_):
     sv = tf.train.Supervisor(logdir=FLAGS.save_path)
     with sv.managed_session() as session:
 #    with tf.Session() as session:
+      print("Start Time: %s" % time.time())
       for i in range(config.max_max_epoch):
         lr_decay = config.lr_decay ** max(i + 1 - config.max_epoch, 0.0)
 	mtrain.assign_lr(session, config.learning_rate * lr_decay)
@@ -213,6 +219,7 @@ def main(_):
 	#valid_perplexity = run_validation(session,mvalid)
         #print("Epoch: %d Valid Perplexity: %.3f" % (i + 1, valid_perplexity))
 
+      print("End Time: %s" % time.time())
       run_test(session, mtest, id_to_word=id_to_word, test_data=test_data)
 #      print("Test Perplexity: %.3f" % test_perplexity)
       
